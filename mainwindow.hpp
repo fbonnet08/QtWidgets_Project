@@ -6,12 +6,14 @@
 #define QTWIDGETS_PROJECT_MAINWINDOW_HPP
 
 #include <QMainWindow>
+
 #include <QtCharts/QChartView>
+/*
 #include <QtCharts/QLineSeries>
 #include <QtCharts/QValueAxis>
 #include <QBarSeries>
 #include <QtCharts/QBarSet>
-
+*/
 QT_BEGIN_NAMESPACE
 
 namespace Ui
@@ -32,6 +34,7 @@ public:
     void on_viewPushButton_clicked();
     void on_clearScrollBarPushButton_clicked();
     void on_quitPushButton_clicked();
+    void on_graph2DPushButton_clicked();
     //MenuBar actions
     void on_openMenuBar_triggered();
     void on_quitMenuBar_triggered();
@@ -40,10 +43,18 @@ public:
     ~MainWindow() override;
 
     QWidget *graphPanel;
-    QChartView *chartView = nullptr;
+    //QChartView *chartView = nullptr;
 
 private:
     Ui::MainWindow* ui;
+
+    //QtCharts::QChartView *chartView;
+    QChartView *chartView;
+
+    QVector<double> xData;
+    QVector<double> yData;
+
+
 };
 
 

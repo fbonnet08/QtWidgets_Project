@@ -18,6 +18,13 @@
 #include <QFile>
 #include <QTextStream>
 
+#include <QtCharts/QChartView>
+#include <QtCharts/QLineSeries>
+#include <QtCharts/QValueAxis>
+
+//using namespace QtCharts;
+
+
 //Main window class
 MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
@@ -29,8 +36,6 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui(new Ui::MainWi
     //TODO: Check if the QtCharts is properly installed.
     //TODO: the QtCharts has been added in the CMakeLists.txt
     //TODO: but getting an error, check the installing of Qt6.
-
-    
 
     /*
         chartView = new QChartView();
@@ -92,6 +97,7 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui(new Ui::MainWi
     topLayout->addWidget(ui->clearScrollBarPushButton);
     topLayout->addWidget(ui->quitPushButton);
     topLayout->addWidget(ui->dateEdit);
+    topLayout->addWidget(ui->graph2DPushButton);
 
     topLayout->addStretch();
     mainLayout->addLayout(topLayout);
@@ -121,7 +127,9 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui(new Ui::MainWi
     //connecting signals and slots on push button
     connect(ui->quitPushButton, &QPushButton::clicked, this, &MainWindow::on_quitPushButton_clicked);
     connect(ui->viewPushButton, &QPushButton::clicked, this, &MainWindow::on_viewPushButton_clicked);
-    connect(ui->clearScrollBarPushButton, &QPushButton::clicked, this, &MainWindow::on_clearScrollBarPushButton_clicked);
+    connect(ui->graph2DPushButton, &QPushButton::clicked, this, &MainWindow::on_graph2DPushButton_clicked);
+    connect(ui->clearScrollBarPushButton,
+        &QPushButton::clicked, this, &MainWindow::on_clearScrollBarPushButton_clicked);
     connect(ui->actionQuit, &QAction::triggered, this, &MainWindow::on_quitMenuBar_triggered);
     connect(ui->actionopen, &QAction::triggered, this, &MainWindow::on_openMenuBar_triggered);
     connect(ui->actionAbout, &QAction::triggered, this, &MainWindow::on_aboutMenuBar_triggered);
@@ -136,7 +144,7 @@ void MainWindow::on_openMenuBar_triggered()
         this,
         tr("Open File"),
         QDir::homePath(),
-        tr("Text Files (*.txt);;PDF Files (*.pdf);;JPEG Files (*.jpg);;All Files (*.*)")
+        tr("All Files (*.*);;asc Files (*.asc);;Surface Files (*.surf);;Text Files (*.txt);;PDF Files (*.pdf);;JPEG Files (*.jpg)")
     );
 
     if (fileName.isEmpty())
@@ -149,7 +157,7 @@ void MainWindow::on_openMenuBar_triggered()
     {
         QDesktopServices::openUrl(
             QUrl::fromLocalFile(fileName));
-    } else if (ext == "txt" || ext == "asc")
+    } else if (ext == "txt" || ext == "asc" || ext == "surf")
     {
         QFile file(fileName);
 
@@ -212,7 +220,6 @@ void MainWindow::on_clearScrollBarPushButton_clicked()
 {
     qDebug() << "Clear ScrollBar button clicked";
 
-
     QWidget *widget = ui->mainwindow_Left_ScrollArea->takeWidget();
 
     if (widget)
@@ -237,6 +244,12 @@ void MainWindow::on_clearScrollBarPushButton_clicked()
 
     */
 }
+
+void MainWindow::on_graph2DPushButton_clicked()
+{
+    qDebug() << "Graph 2D button clicked, graphing the data from the scrollbar Area and read in data";
+}
+
 
 // Quiting and closing actions
 void MainWindow::on_quitPushButton_clicked()
