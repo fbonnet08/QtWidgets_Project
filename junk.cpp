@@ -1,4 +1,57 @@
 
+//QStringList lineList = line.split("\n");
+//std::cout << values.value(10).toStdString() << std::endl;
+/*
+QStringList values =
+    line.split(QRegExp("\\s+"), Qt::SkipEmptyParts);
+*/
+
+
+
+
+chartView = new QChartView();
+
+chartView->setRenderHint(QPainter::Antialiasing);
+
+ui->mainwindow_Right_GridLayout->addWidget(
+    chartView,
+    0,
+    0
+);
+
+
+
+
+void MainWindow::on_clearScrollBarPushButton_clicked()
+{
+    qDebug() << "Clear ScrollBar button clicked";
+
+    QWidget *widget = ui->mainwindow_Left_ScrollArea->takeWidget();
+
+    if (widget)
+    {
+        widget->deleteLater();
+    }
+
+    /*
+
+    QWidget *leftWidget =
+    ui->mainwindow_Left_ScrollArea->takeWidget();
+
+    if (leftWidget)
+        leftWidget->deleteLater();
+
+
+    if (graphPanel)
+    {
+        graphPanel->deleteLater();
+        graphPanel = nullptr;
+    }
+
+    */
+}
+
+
 
 // Put the scroll area into the grid layout
 ui->mainwindow_Left_GridLayout->addWidget(

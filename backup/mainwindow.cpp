@@ -2,13 +2,9 @@
 // Created by frede on 7/9/2026.
 //
 
-// You may need to build the project (run Qt uic code generator)
-// to get "ui_MainWindow.h" resolved
+// You may need to build the project (run Qt uic code generator) to get "ui_MainWindow.h" resolved
 
 #include "mainwindow.hpp"
-
-#include <iostream>
-
 #include "ui_mainwindow.h"
 
 #include <QDebug>
@@ -22,6 +18,13 @@
 #include <QFile>
 #include <QTextStream>
 
+#include <QtCharts/QChartView>
+#include <QtCharts/QLineSeries>
+#include <QtCharts/QValueAxis>
+
+//using namespace QtCharts;
+
+
 //Main window class
 MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
@@ -33,6 +36,18 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui(new Ui::MainWi
     //TODO: Check if the QtCharts is properly installed.
     //TODO: the QtCharts has been added in the CMakeLists.txt
     //TODO: but getting an error, check the installing of Qt6.
+
+    /*
+        chartView = new QChartView();
+        chartView->setRenderHint(QPainter::Antialiasing);
+
+        ui->mainwindow_Right_GridLayout->addWidget(
+            chartView,
+            0,
+            0
+        );
+    */
+
     /*
      * LEFT PANEL
      * Put scroll area into left grid layout
@@ -52,11 +67,11 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui(new Ui::MainWi
      *
      * Replace this with QCustomPlot/QChartView/etc.
      */
-
     QTextEdit *graphPanel = new QTextEdit();
     graphPanel->setReadOnly(true);
     graphPanel->setPlaceholderText(
-        "Graph panel: Graph content from left panel will appear here.\n"
+        "Graph panel\n\n"
+        "Graph content from left panel will appear here."
     );
 
     ui->mainwindow_Right_GridLayout->addWidget(
@@ -65,17 +80,8 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui(new Ui::MainWi
         0
     );
 
-    //chartView = new QChartView();
-    //QChart *chart = new QChart();
-    //chartView->setRenderHint(QPainter::Antialiasing);
-    //ui->mainwindow_Right_GridLayout->addWidget(
-    //    chartView,
-    //    0,
-    //    0
-    //);
-
-    //ui->mainwindow_Right_GridLayout->setRowStretch(0,1);
-    //ui->mainwindow_Right_GridLayout->setColumnStretch(0,1);
+    ui->mainwindow_Right_GridLayout->setRowStretch(0,1);
+    ui->mainwindow_Right_GridLayout->setColumnStretch(0,1);
 
     /*
      * MAIN WINDOW LAYOUT
@@ -220,119 +226,30 @@ void MainWindow::on_clearScrollBarPushButton_clicked()
     {
         widget->deleteLater();
     }
+
+    /*
+
+    QWidget *leftWidget =
+    ui->mainwindow_Left_ScrollArea->takeWidget();
+
+    if (leftWidget)
+        leftWidget->deleteLater();
+
+
+    if (graphPanel)
+    {
+        graphPanel->deleteLater();
+        graphPanel = nullptr;
+    }
+
+    */
 }
 
 void MainWindow::on_graph2DPushButton_clicked()
 {
-    int index = 0;
     qDebug() << "Graph 2D button clicked, graphing the data from the scrollbar Area and read in data";
-
-    // clearing the x and y vectors.
-    xData.clear();
-    yData.clear();
-
-    /*
-     * Get data from the scroll area
-     */
-    QWidget *widget = ui->mainwindow_Left_ScrollArea->widget();
-
-    QTextEdit *text = qobject_cast<QTextEdit*>(widget);
-
-    if (!text)
-    {
-        QMessageBox::warning(
-            this,
-            "Graph Error",
-            "No numerical data loaded.\n"
-            "Use the view button to load an asc, surf or text file ...\n"
-        );
-        return;
-    }
-
-    QString data = text->toPlainText();
-
-    //std::cout << data.toStdString() << std::endl;
-
-    /*
-    * Expected input format:
-    -10.000000      0.120386
-    -9.900000      0.121866
-    -9.800000      0.123362
-    -9.700000      0.124876
-    -9.600000      0.126407
-    -9.500000      0.127955
-    -9.400000      0.129520
-    -9.300000      0.131103
-    */
-
-    QStringList lines = data.split("\n",Qt::SkipEmptyParts);
-
-    int cnt = 0;
-    for(QString line : lines)
-    {
-        std::cout << "line["<<cnt<<"]:--->: "<<line.toStdString() << std::endl;
-
-        QStringList values = line.split(
-            QRegularExpression("\\s+"),
-            Qt::SkipEmptyParts);
-
-        if(values.count() >= 2)
-        {
-            bool ok1;
-            bool ok2;
-
-            double x = values[0].toDouble(&ok1);
-            double y = values[1].toDouble(&ok2);
-
-            if(ok1 && ok2)
-            {
-                xData.append(x);
-                yData.append(y);
-            }
-        }
-        else
-        {
-            // Single column data
-            // y values only
-            bool ok;
-            double y = line.toDouble(&ok);
-            if(ok)
-            {
-                xData.append(index++);
-                yData.append(y);
-            }
-        }
-
-        cnt++;
-    } // [for-loop]: for(QString line : lines)
-
-    // Check if the xData vectoir is empty or not.
-    if(xData.isEmpty())
-    {
-        QMessageBox::warning(
-            this,
-            "Graph Error",
-            "No valid numerical data found."
-        );
-        return;
-    }
-
-    /*
-     * Create Line Series
-    */
-    /*
-        QLineSeries *series = new QLineSeries();
-
-        for(int i=0;i<xData.size();i++)
-        {
-            series->append(
-                xData[i],
-                yData[i]
-            );
-        }
-    */
-
 }
+
 
 // Quiting and closing actions
 void MainWindow::on_quitPushButton_clicked()

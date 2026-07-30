@@ -14,12 +14,6 @@
 #include <QBarSeries>
 #include <QtCharts/QBarSet>
 */
-#include <QChartView>
-#include <QChart>
-#include <QLineSeries>
-#include <QValueAxis>
-
-// Namespaces
 QT_BEGIN_NAMESPACE
 
 namespace Ui
@@ -54,10 +48,14 @@ public:
 private:
     Ui::MainWindow* ui;
 
+    //QtCharts::QChartView *chartView;
     QChartView *chartView;
 
     QVector<double> xData;
     QVector<double> yData;
+
+
 };
+
 
 #endif //QTWIDGETS_PROJECT_MAINWINDOW_HPP

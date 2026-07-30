@@ -6,21 +6,26 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
-
-find_package(Qt6 COMPONENTS
+find_package(Qt6 REQUIRED COMPONENTS
         Core
+        Core5Compat
         Gui
         Widgets
         Charts
-        REQUIRED)
+        )
 
-add_executable(QtWidgets_Project main.cpp
-        mainwindow.cpp)
+set(SOURCE_FILES
+        mainwindow.cpp
+)
+
+add_executable(QtWidgets_Project main.cpp ${SOURCE_FILES})
+
 target_link_libraries(QtWidgets_Project
-        Qt::Core
-        Qt::Gui
-        Qt::Widgets
-        Qt::Charts
+        Qt6::Core
+        Qt6::Gui
+        Qt6::Widgets
+        Qt6::Charts
+        Qt6::Core5Compat
 )
 
 if (WIN32 AND NOT DEFINED CMAKE_TOOLCHAIN_FILE)
